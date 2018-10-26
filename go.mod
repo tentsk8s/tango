@@ -1,4 +1,4 @@
-module github.com/tentsk8s/onfig
+module github.com/tentsk8s/tango
 
 require (
 	github.com/davecgh/go-spew v1.1.0 // indirect
@@ -17,7 +17,7 @@ require (
 	github.com/spf13/viper v1.0.2
 	github.com/stretchr/objx v0.1.1 // indirect
 	github.com/stretchr/testify v1.2.2 // indirect
-	golang.org/x/sys v0.0.0-20180801221139-3dc4335d56c7 // indirect
+	golang.org/x/sys v0.0.0-20181026203630-95b1ffbd15a5 // indirect
 	golang.org/x/text v0.3.0 // indirect
 	gopkg.in/yaml.v2 v2.2.1 // indirect
 	k8s.io/api v0.0.0-20180711052118-183f3326a935 // indirect
