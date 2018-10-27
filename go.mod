@@ -3,6 +3,7 @@ module github.com/tentsk8s/tango
 require (
 	github.com/appscode/go v0.0.0-20181026063042-a6d58457b393
 	github.com/daviddengcn/go-colortext v0.0.0-20180409174941-186a3d44e920
+	github.com/fatih/color v1.7.0
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/magefile/mage v1.7.1
 	github.com/magiconair/properties v1.8.0 // indirect
@@ -19,4 +20,5 @@ require (
 	golang.org/x/sys v0.0.0-20181026203630-95b1ffbd15a5 // indirect
 	golang.org/x/text v0.3.0 // indirect
 	k8s.io/api v0.0.0-20180711052118-183f3326a935
+	k8s.io/client-go v9.0.0+incompatible // indirect
 )

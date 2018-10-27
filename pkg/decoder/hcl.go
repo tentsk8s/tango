@@ -43,8 +43,12 @@ func (c Container) Validate() error {
 	return nil
 }
 
-func (c Container) String() string {
+func (c Container) CompleteImageName() string {
 	return c.Name + ":" + c.Tag
+}
+
+func (c Container) String() string {
+	return c.CompleteImageName()
 }
 
 func Svc() (*Service, error) {
