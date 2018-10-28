@@ -1,48 +1,62 @@
 package build
 
 import (
-	"fmt"
-	"os"
-
-	"github.com/magefile/mage/sh"
 	"github.com/spf13/cobra"
 	"github.com/tentsk8s/tango/pkg/decoder"
 	"github.com/tentsk8s/tango/pkg/log"
 )
 
-func buildImage(imageName, imageTag, dockerFileLoc, buildContextLoc string) (bool, error) {
-	img := fmt.Sprintf("%s:%s", imageName, imageTag)
-	args := []string{"build", "-t", img}
-	if dockerFileLoc != "." {
-		args = append(args, "-f", dockerFileLoc)
-	}
-	args = append(args, buildContextLoc)
-	return sh.Exec(map[string]string{}, os.Stdout, os.Stderr, "docker", args...)
-	// TODO: also push the container
-}
-
 func Command() *cobra.Command {
-	return &cobra.Command{
+	var dockerFileLoc string
+	var dockerContext string
+	var registry string
+	var builderStr string
+	cmd := &cobra.Command{
 		Use: "build",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
 				return log.Error(true, "Please don't pass any arguments to this :)")
+			}
+			builder, err := newBuilder(builderStr)
+			if err != nil {
+				return log.Err(true, err)
 			}
 			svc, err := decoder.Svc()
 			if err != nil {
 				return err
 			}
 			for _, container := range svc.Containers {
-				log.Statusf(false, "Building %s...", container)
+				log.Statusf(false, "Building image %s", container)
 				if err := container.Validate(); err != nil {
 					return log.Err(true, err)
 				}
-				_, err := buildImage(container.Name, container.Tag, container.GetDockerfile(), container.GetDockerRoot())
+
+				dockerFile := container.GetDockerfile(dockerFileLoc)
+				dockerRoot := container.GetDockerRoot(dockerContext)
+				_, err := build(builder, buildParams{
+					name:     container.Name,
+					tag:      container.Tag,
+					registry: registry,
+					fileLoc:  dockerFile,
+					context:  dockerRoot,
+				})
 				if err != nil {
 					return err
 				}
+
+				// TODO: also push the image
 			}
 			return nil
 		},
 	}
+	flags := cmd.Flags()
+	const dockerFileLocDescription = "The directory the Dockerfile is in"
+	flags.StringVarP(&dockerFileLoc, "dockerfile", "f", ".", dockerFileLocDescription)
+	const dockerContextDescription = "The Docker context to send"
+	flags.StringVarP(&dockerContext, "context", "c", ".", dockerContextDescription)
+	const buildTypeDescription = "The Docker builder type. 'local' for local Docker daemon, 'acr' for ACR builder"
+	flags.StringVarP(&builderStr, "builder", "b", "local", buildTypeDescription)
+	const registryDescription = "The ACR registry (you must pass this if you pass build type as 'acr')"
+	flags.StringVarP(&registry, "registry", "r", "", registryDescription)
+	return cmd
 }
