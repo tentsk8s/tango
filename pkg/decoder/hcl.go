@@ -38,7 +38,7 @@ func (c Container) GetDockerRoot(def string) string {
 
 func (c Container) Validate() error {
 	if !ioutil.IsFileExists(c.GetDockerfile(".")) {
-		return fmt.Errorf("Dockerfile '%s' doesn't exist!", c.GetDockerfile("."))
+		return fmt.Errorf("%s doesn't exist!", c.GetDockerfile("."))
 	}
 	if !ioutil.IsFileExists(c.GetDockerRoot(".")) {
 		return fmt.Errorf("Docker context '%s' doesn't exist!", c.GetDockerRoot("."))
