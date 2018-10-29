@@ -5,7 +5,7 @@ import (
 )
 
 func Command() *cobra.Command {
-	runner := runner{}
+	runner := &runner{}
 	cmd := &cobra.Command{
 		Use:   "deploy",
 		Short: "Deploy your app! Make sure to run 'tango build' before you do this",
