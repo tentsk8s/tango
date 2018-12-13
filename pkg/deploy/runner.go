@@ -17,8 +17,14 @@ func (r *runner) run(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return log.Err(true, err)
 	}
-	deployment := translate.Service(svc)
-	log.Statusf(true, "deployment: %s", deployment)
+	log.Statusf(
+		"deploying %d replica(s) for app %s, which has %d container(s)",
+		svc.Replicas,
+		svc.Name,
+		len(svc.Containers),
+	)
+	// deployment := translate.Service(svc)
+	// log.Statusf(true, "deployment: %s", deployment)
 
 	return nil
 }
