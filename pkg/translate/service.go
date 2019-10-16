@@ -5,7 +5,7 @@ import (
 	apps "k8s.io/api/apps/v1"
 )
 
-func Service(svc *decoder.Service) *apps.Deployment {
+func ServiceToDeployment(svc *decoder.Service) *apps.Deployment {
 	// https://godoc.org/k8s.io/api/apps/v1#Deployment
 	return &apps.Deployment{
 		// TODO: TypeMeta

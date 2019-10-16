@@ -18,8 +18,9 @@ func Command() *cobra.Command {
 			if err != nil {
 				return log.Err(true, err)
 			}
-			deployment := translate.Service(svc)
-			log.Statusf(true, "deployment: %s", deployment)
+			deployment := translate.ServiceToDeployment(svc)
+			log.Statusf(true, "deployment %s created", deployment.Name)
+			service := translate.ServiceToService(svc)
 
 			return nil
 		},
