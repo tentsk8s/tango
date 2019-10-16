@@ -1,3 +1,5 @@
+>Tango is a brand new project and is just starting up. Not everything in this document is implemented yet
+
 # Tango
 
 >Kubernetes for App Devs
