@@ -22,23 +22,26 @@ type Container struct {
 	DockerRoot *string
 }
 
-func (c Container) GetDockerfile() string {
+// GetDockerfile returns the path to the Dockerfile, not including the 'Dockerfile' part
+func (c Container) GetDockerfile(def string) string {
 	if c.Dockerfile == nil {
-		return "."
+		return filepath.Join(def, "Dockerfile")
 	}
-	return *c.Dockerfile
+	return filepath.Join(*c.Dockerfile, "Dockerfile")
 }
-func (c Container) GetDockerRoot() string {
+func (c Container) GetDockerRoot(def string) string {
 	if c.DockerRoot == nil {
-		return "."
+		return def
 	}
 	return *c.DockerRoot
 }
 
 func (c Container) Validate() error {
-	dockerFileFull := filepath.Join(c.GetDockerfile(), "Dockerfile")
-	if !ioutil.IsFileExists(dockerFileFull) {
-		return fmt.Errorf("%s doesn't exist!", dockerFileFull)
+	if !ioutil.IsFileExists(c.GetDockerfile(".")) {
+		return fmt.Errorf("%s doesn't exist!", c.GetDockerfile("."))
+	}
+	if !ioutil.IsFileExists(c.GetDockerRoot(".")) {
+		return fmt.Errorf("Docker context '%s' doesn't exist!", c.GetDockerRoot("."))
 	}
 	return nil
 }

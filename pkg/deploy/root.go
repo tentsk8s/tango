@@ -2,12 +2,10 @@ package deploy
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/tentsk8s/tango/pkg/decoder"
-	"github.com/tentsk8s/tango/pkg/log"
-	"github.com/tentsk8s/tango/pkg/translate"
 )
 
 func Command() *cobra.Command {
+<<<<<<< HEAD
 	return &cobra.Command{
 		Use: "deploy",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -24,5 +22,12 @@ func Command() *cobra.Command {
 
 			return nil
 		},
+	// runner := &runner{}
+	// cmd := &cobra.Command{
+	// 	Use:   "deploy",
+	// 	Short: "Deploy your app! Make sure to run 'tango build' before you do this",
+	// 	RunE:  runner.run,
+	// }
 	}
+	return cmd
 }
